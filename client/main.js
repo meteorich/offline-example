@@ -16,6 +16,14 @@ Template.hello.onCreated(function helloOnCreated() {
 
 Template.hello.helpers({
 
+  // connection
+
+  connected() {
+    return Meteor.status().connected
+  },
+
+  // logs collection subscription status and helpers
+
   displaySubReady(handleKey) {
 
       let handle = Template.instance().subscriptions[handleKey].get();
@@ -40,15 +48,35 @@ Template.hello.helpers({
 
   logsOnline() {
     return Logs.find({}, { sort: { createdAt: -1 } });
-  }  
+  },
+
+  // accounts
+  
+  loginStatus() {
+    if ( Meteor.user() ) {
+      return `Logged in with _id ${Meteor.userId()}`
+    } else if ( Meteor.loggingIn() ) {
+      return `Logging in...`
+    } else {
+      return `Not logged in`
+    }
+  },
+
+  userProfile() {
+    return Meteor.user() && Meteor.user().profile
+  }
 
 });
 
 Template.hello.events({
 
   'click button.js-insert'(event, instance) {
-    Logs.insert( createNewLog() );
+    Meteor.call( 'logs.insertLog' );
   },
+
+  'click button.js-remove-all-logs'(event, instance) {
+    Meteor.call( 'logs.removeAllLogs' );
+  },  
 
   'click button.js-insert-ground'(event, instance) {
     _Logs.insert( createNewLog() );
@@ -70,6 +98,10 @@ Template.hello.events({
 
   'click button.js-keep'(event, instance) {
     _Logs.keep(Logs.find());
+  },
+
+  'click button.js-update-user'(event, instance) {
+    Meteor.call( 'users.updateUser.loggedInUser' );
   }
   
 });
@@ -78,9 +110,3 @@ Template.registerHelper('formatDate', (d) => {
   return moment(d).format('YYYY-MM-DD hh-mm-ss')
 })
 
-function createNewLog() {
-  let number = Math.floor( Random.fraction()*100000 );
-  let odd = ( number%2==1 ) ? true : false;
-  let createdAt = new Date;
-  return { number, odd, createdAt };
-}

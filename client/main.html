@@ -11,7 +11,13 @@
 <template name="hello">
   
   <h2>Subscriptions</h2>
+
   <table>
+    <tr>
+      <td></td>
+      <td>Connection status</td>
+      <td>{{#if connected}}Connected{{else}}Not connected{{/if}}</td>
+    </tr>
     <tr>
       <td><button class="js-subscribe-odd">Subscribe odd</button></td>
       <td>Subscription handle - Odd</td>
@@ -29,12 +35,33 @@
     </tr>
   </table>
   
-  <h2>Collections</h2>
-  <button class="js-insert">Insert to Logs </button>
-  <button class="js-insert-ground">Insert to _Logs (ground) </button>
-
-  <button class="js-clear">_Logs (ground) - clear</button>
-  <button class="js-keep">_Logs (ground) - keep</button>
+  <h2>Logs Collection</h2>
+  <table>
+    <tr>
+      <td><button class="js-insert">Insert to Logs</button></td>
+      <td><button class="js-remove-all-logs">Remove all Logs</button></td>   
+    </tr>
+    <tr>
+      <td><button class="js-clear">_Logs (ground) - clear</button></td>
+      <td><button class="js-keep">_Logs (ground) - keep</button></td>   
+    </tr>
+    <tr>
+      <td><button class="js-insert-ground">Insert to _Logs (ground)</button></td>   
+      <td colspan=999>Note: it would be unusual to insert into the grounded (and hence client-side only) collection, but function is included here to demonstrate behaviour.</td>
+    </tr>
+  </table>
+  
+  <h2>Accounts</h2>
+  <table>
+    <tr>
+      <td>{{> loginButtons}}</td>
+      <td><button class="js-update-user">Update user</button></td>
+      <td>
+        <div>{{loginStatus}}</div>
+        <div>Profile counter: {{userProfile.counter}}</div>
+      </td>
+    </tr>
+  </table>
 
   <h2>Logs</h2>
   <table>
