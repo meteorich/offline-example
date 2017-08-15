@@ -8,28 +8,79 @@ _Logs.observeSource(Logs.find());
 
 
 Template.hello.onCreated(function helloOnCreated() {
-  this.subscribe('logs');
-  
+  this.subscriptions = {
+    'odd' : new ReactiveVar(null),
+    'even': new ReactiveVar(null)
+  }
 });
 
 Template.hello.helpers({
-  counter() {
-    return _Logs.find().count();
+
+  displaySubReady(handleKey) {
+
+      let handle = Template.instance().subscriptions[handleKey].get();
+      
+      if (!handle) {
+        return "No subscription yet";
+      } else {
+        let ready = handle.ready();
+        return `${handle.subscriptionId} ${(ready) ? 'ready' : 'loading...'}`;
+      }
+  
   },
+
+  displayTemplateSubsReady() {
+    let ready = Template.instance().subscriptionsReady()
+    return `${(ready) ? 'ready' : 'loading...'}`;
+  },
+
   logs() {
     return _Logs.find({}, { sort: { createdAt: -1 } });
   },
+
   logsOnline() {
     return Logs.find({}, { sort: { createdAt: -1 } });
   }  
+
 });
 
 Template.hello.events({
-  'click button'(event, instance) {
-    Logs.insert({ createdAt: (new Date) });
+
+  'click button.js-insert'(event, instance) {
+    Logs.insert( createNewLog() );
   },
+
+  'click button.js-insert-ground'(event, instance) {
+    _Logs.insert( createNewLog() );
+  },
+
+  'click button.js-subscribe-odd'(event, instance) {
+    let h = instance.subscribe('logs.odd');
+    instance.subscriptions['odd'].set(h);
+  },
+
+  'click button.js-subscribe-even'(event, instance) {
+    let h = instance.subscribe('logs.even');
+    instance.subscriptions['even'].set(h);
+  },
+
+  'click button.js-clear'(event, instance) {
+    _Logs.clear();
+  },
+
+  'click button.js-keep'(event, instance) {
+    _Logs.keep(Logs.find());
+  }
+  
 });
 
 Template.registerHelper('formatDate', (d) => {
   return moment(d).format('YYYY-MM-DD hh-mm-ss')
 })
+
+function createNewLog() {
+  let number = Math.floor( Random.fraction()*100000 );
+  let odd = ( number%2==1 ) ? true : false;
+  let createdAt = new Date;
+  return { number, odd, createdAt };
+}

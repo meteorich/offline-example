@@ -9,27 +9,55 @@
 </body>
 
 <template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+  
+  <h2>Subscriptions</h2>
+  <table>
+    <tr>
+      <td><button class="js-subscribe-odd">Subscribe odd</button></td>
+      <td>Subscription handle - Odd</td>
+      <td>{{displaySubReady 'odd'}}</td>
+    </tr>
+    <tr>
+      <td><button class="js-subscribe-even">Subscribe even</button></td>      
+      <td>Subscription handle - Even</td>
+      <td>{{displaySubReady 'even'}}</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Template.instance().subscriptionsReady()</td>
+      <td>{{displayTemplateSubsReady}}</td>
+    </tr>
+  </table>
+  
+  <h2>Collections</h2>
+  <button class="js-insert">Insert to Logs </button>
+  <button class="js-insert-ground">Insert to _Logs (ground) </button>
+
+  <button class="js-clear">_Logs (ground) - clear</button>
+  <button class="js-keep">_Logs (ground) - keep</button>
 
   <h2>Logs</h2>
   <table>
     <thead>
       <tr> 
-        <th>Offline</th>
-        <th>(Online)</th>
+        <th>_Logs (ground)</th>
+        <th>Logs (online)</th>
+      </tr>
+      <tr> 
+        <th>{{logs.count}}</th>
+        <th>{{logsOnline.count}}</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>
           {{#each logs}}          
-          <p>{{formatDate createdAt}}</p>
+          <p>{{number}}</p>
           {{/each}}
         </td>
         <td>
           {{#each logsOnline}}          
-          <p>{{formatDate createdAt}}</p>
+          <p>{{number}}</p>
           {{/each}}
         </td>          
       </tr>
