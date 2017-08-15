@@ -13,8 +13,27 @@
   <p>You've pressed the button {{counter}} times.</p>
 
   <h2>Logs</h2>
-  {{#each logs}}
-    <p>{{createdAt}}</p>
-  {{/each}}
+  <table>
+    <thead>
+      <tr> 
+        <th>Offline</th>
+        <th>(Online)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          {{#each logs}}          
+          <p>{{formatDate createdAt}}</p>
+          {{/each}}
+        </td>
+        <td>
+          {{#each logsOnline}}          
+          <p>{{formatDate createdAt}}</p>
+          {{/each}}
+        </td>          
+      </tr>
+    </tbody>
+  </table>
 </template>
 
