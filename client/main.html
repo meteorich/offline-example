@@ -3,8 +3,6 @@
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
-
   {{> hello}}
 </body>
 
@@ -15,8 +13,8 @@
   <table>
     <tr>
       <td></td>
-      <td>Connection status</td>
-      <td>{{#if connected}}Connected{{else}}Not connected{{/if}}</td>
+      <td><b>Connection status</b></td>
+      <td><b>{{#if connected}}CONNECTED{{else}}NOT CONNECTED{{/if}}</b></td>
     </tr>
     <tr>
       <td><button class="js-subscribe-odd">Subscribe odd</button></td>
@@ -52,14 +50,28 @@
   </table>
   
   <h2>Accounts</h2>
+  <p>Note that we are using the <a href="#">accounts-auto-login-offline</a> package to populate Meteor.user() when not subscribed to the server users collection.</p>
   <table>
     <tr>
       <td>{{> loginButtons}}</td>
+      <td>Meteor.userId()</td>
+      <td>{{userId}}</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
       <td><button class="js-update-user">Update user</button></td>
-      <td>
-        <div>{{loginStatus}}</div>
-        <div>Profile counter: {{userProfile.counter}}</div>
-      </td>
+      <td>Meteor.user()</td>
+      <td>{{userStr}}</td>
+      <td>Accounts._online_user()</td>
+      <td>{{userStr_online}}</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Meteor.loggingIn()</td>
+      <td>{{loggingIn}}</td>
+      <td>Accounts._online_loggingIn()</td>
+      <td>{{loggingIn_online}}</td>
     </tr>
   </table>
 
@@ -72,7 +84,7 @@
       </tr>
       <tr> 
         <th>{{logs.count}}</th>
-        <th>{{logsOnline.count}}</th>
+        <th>{{logs_online.count}}</th>
       </tr>
     </thead>
     <tbody>
@@ -83,7 +95,7 @@
           {{/each}}
         </td>
         <td>
-          {{#each logsOnline}}          
+          {{#each logs_online}}          
           <p>{{number}}</p>
           {{/each}}
         </td>          

@@ -24,3 +24,4 @@ random
 reactive-dict
 accounts-password
 accounts-ui
+meteorich:accounts-offline-auto-login

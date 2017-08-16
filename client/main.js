@@ -1,11 +1,11 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
+import { EJSON } from 'meteor/ejson';
 
 import './main.html';
 
 _Logs = new Ground.Collection('_logs');
 _Logs.observeSource(Logs.find());
-
 
 Template.hello.onCreated(function helloOnCreated() {
   this.subscriptions = {
@@ -46,24 +46,30 @@ Template.hello.helpers({
     return _Logs.find({}, { sort: { createdAt: -1 } });
   },
 
-  logsOnline() {
+  logs_online() {
     return Logs.find({}, { sort: { createdAt: -1 } });
   },
 
   // accounts
   
-  loginStatus() {
-    if ( Meteor.user() ) {
-      return `Logged in with _id ${Meteor.userId()}`
-    } else if ( Meteor.loggingIn() ) {
-      return `Logging in...`
-    } else {
-      return `Not logged in`
-    }
+  userId() {
+    return Meteor.userId();
   },
 
-  userProfile() {
-    return Meteor.user() && Meteor.user().profile
+  userStr() {
+    return EJSON.stringify( Meteor.user() );
+  },
+
+  userStr_online() {
+    return EJSON.stringify( Accounts._online_user() );
+  },
+
+  loggingIn() {
+    return Meteor.loggingIn();
+  },
+
+  loggingIn_online() {
+    return Accounts._online_loggingIn()
   }
 
 });
