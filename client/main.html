@@ -12,7 +12,13 @@
 
   <table>
     <tr>
-      <td></td>
+      <td>
+        {{#if connected}}
+        <button class="js-disconnect">Disconnect</button>
+        {{else}}
+        <button class="js-connect">Connect</button>
+        {{/if}}
+      </td>
       <td><b>Connection status</b></td>
       <td><b>{{#if connected}}CONNECTED{{else}}NOT CONNECTED{{/if}}</b></td>
     </tr>
@@ -34,18 +40,19 @@
   </table>
   
   <h2>Logs Collection</h2>
+  {{#unless connected}}<p>You are currently disconnected. ground:db does not support offline insert / update / remove operations. Meteor.status().connected is reactive and can be used to disable UI components when not connected.</p>{{/unless}}
   <table>
     <tr>
       <td><button class="js-insert">Insert to Logs</button></td>
       <td><button class="js-remove-all-logs">Remove all Logs</button></td>   
     </tr>
     <tr>
-      <td><button class="js-clear">_Logs (ground) - clear</button></td>
-      <td><button class="js-keep">_Logs (ground) - keep</button></td>   
+      <td><button class="js-clear">Logs.grounded - clear</button></td>
+      <td><button class="js-keep">Logs.grounded - keep</button></td>   
     </tr>
     <tr>
-      <td><button class="js-insert-ground">Insert to _Logs (ground)</button></td>   
-      <td colspan=999>Note: it would be unusual to insert into the grounded (and hence client-side only) collection, but function is included here to demonstrate behaviour.</td>
+      <td><button class="js-insert-ground">Insert to Logs.grounded</button></td>   
+      <td colspan=999>(Note: it would be unusual to insert into the grounded (and hence client-side only) collection, but function is included here to demonstrate behaviour.)</td>
     </tr>
   </table>
   
@@ -79,7 +86,7 @@
   <table>
     <thead>
       <tr> 
-        <th>_Logs (ground)</th>
+        <th>Logs.grounded</th>
         <th>Logs (online)</th>
       </tr>
       <tr> 

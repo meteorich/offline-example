@@ -4,8 +4,8 @@ import { EJSON } from 'meteor/ejson';
 
 import './main.html';
 
-_Logs = new Ground.Collection('_logs');
-_Logs.observeSource(Logs.find());
+Logs.grounded = new Ground.Collection('_logs');
+Logs.grounded.observeSource(Logs.find());
 
 Template.hello.onCreated(function helloOnCreated() {
   this.subscriptions = {
@@ -43,7 +43,7 @@ Template.hello.helpers({
   },
 
   logs() {
-    return _Logs.find({}, { sort: { createdAt: -1 } });
+    return Logs.grounded.find({}, { sort: { createdAt: -1 } });
   },
 
   logs_online() {
@@ -76,17 +76,13 @@ Template.hello.helpers({
 
 Template.hello.events({
 
-  'click button.js-insert'(event, instance) {
-    Meteor.call( 'logs.insertLog' );
-  },
+  'click button.js-connect'(event, instance) {
+    Meteor.reconnect();
+  },    
 
-  'click button.js-remove-all-logs'(event, instance) {
-    Meteor.call( 'logs.removeAllLogs' );
-  },  
-
-  'click button.js-insert-ground'(event, instance) {
-    _Logs.insert( createNewLog() );
-  },
+  'click button.js-disconnect'(event, instance) {
+    Meteor.disconnect();
+  },    
 
   'click button.js-subscribe-odd'(event, instance) {
     let h = instance.subscribe('logs.odd');
@@ -98,12 +94,24 @@ Template.hello.events({
     instance.subscriptions['even'].set(h);
   },
 
+  'click button.js-insert'(event, instance) {
+    Meteor.call( 'logs.insertLog' );
+  },
+
+  'click button.js-remove-all-logs'(event, instance) {
+    Meteor.call( 'logs.removeAllLogs' );
+  },  
+
+  'click button.js-insert-ground'(event, instance) {
+    Logs.grounded.insert( Logs.createNewLog() );
+  },
+
   'click button.js-clear'(event, instance) {
-    _Logs.clear();
+    Logs.grounded.clear();
   },
 
   'click button.js-keep'(event, instance) {
-    _Logs.keep(Logs.find());
+    Logs.grounded.keep(Logs.find());
   },
 
   'click button.js-update-user'(event, instance) {

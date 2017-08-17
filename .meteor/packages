@@ -25,3 +25,4 @@ reactive-dict
 accounts-password
 accounts-ui
 meteorich:accounts-offline-auto-login
+meteorich:accounts-offline-logout
