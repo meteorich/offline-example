@@ -1,5 +1,5 @@
 {
-  "name": "ground-login-example",
+  "name": "offline-example",
   "private": true,
   "scripts": {
     "start": "meteor run"
